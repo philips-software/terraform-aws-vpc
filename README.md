@@ -79,3 +79,7 @@ This module is part of the Philips Forest.
 
                                                                  Infrastructure
 ```
+
+Talk to the forestkeepers in the `forest`-channel on Slack.
+
+[![Slack](https://slackin-vdwxebygpt.now.sh/badge.svg)](https://slackin-vdwxebygpt.now.sh)
