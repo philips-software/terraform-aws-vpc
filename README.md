@@ -82,4 +82,4 @@ This module is part of the Philips Forest.
 
 Talk to the forestkeepers in the `forest`-channel on Slack.
 
-[![Slack](https://slackin-vdwxebygpt.now.sh/badge.svg)](https://slackin-vdwxebygpt.now.sh)
+[![Slack](https://philips-software-slackin.now.sh/badge.svg)](https://philips-software-slackin.now.sh)

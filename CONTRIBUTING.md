@@ -12,7 +12,7 @@ We'd love for you to contribute to our source code and to make the Forest even b
 
 If you have questions about how to use the Forest, please direct these to the [Slack group / philips-software][slack].
 
-[![Slack](https://slackin-vdwxebygpt.now.sh/badge.svg)](https://slackin-vdwxebygpt.now.sh)
+[![Slack](https://philips-software-slackin.now.sh/badge.svg)](https://philips-software-slackin.now.sh)
 
 ## <a name="issue"></a> Found an Issue?
 
@@ -131,7 +131,7 @@ For more info, please reach out to the team on [Slack group / philips-software][
 
 Use the badge to sign-up.
 
-[![Slack](https://slackin-vdwxebygpt.now.sh/badge.svg)](https://slackin-vdwxebygpt.now.sh)
+[![Slack](https://philips-software-slackin.now.sh/badge.svg)](https://philips-software-slackin.now.sh)
 
 [contribute]: CONTRIBUTING.md
 [github]: https://github.com/philips-software/terraform-aws-vpc/issues 
