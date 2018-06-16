@@ -14,7 +14,7 @@ We'd love for you to contribute to our source code and to make the Forest even b
 
 If you have questions about how to use the Forest, please direct these to the [Slack group / philips-software][slack].
 
-![Slack](https://slackin-vdwxebygpt.now.sh/badge.svg)
+[![Slack](https://slackin-vdwxebygpt.now.sh/badge.svg)](https://slackin-vdwxebygpt.now.sh)
 
 ## <a name="issue"></a> Found an Issue?
 
