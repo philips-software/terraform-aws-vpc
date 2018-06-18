@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
+- Slack badge in documentation
 - Refactored route table creation to support updates of routes. The change requires manually updates. See [README.md](README.md)
 - Add output variables for route table ids
 - Added availability zone to output
