@@ -10,7 +10,7 @@ aws ec2 describe-availability-zones --region <region>
 ## Example usages:
 ```
 module "vpc" {
-  source = "https://github.com/philips-software/terraform-aws-vpc.git?ref=1.0.0"
+  source = "github.com/philips-software/terraform-aws-vpc.git?ref=1.0.0"
 
   environment = "my-awsome-project"
   aws_region  = "eu-west-1"
