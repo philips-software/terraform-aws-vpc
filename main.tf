@@ -98,7 +98,7 @@ resource "aws_subnet" "private_subnet" {
     Name        = "${var.environment}-${element(var.availability_zones[var.aws_region], count.index)}-private"
     Environment = "${var.environment}"
     Project     = "${var.project}"
-    Tier        = "public"
+    Tier        = "private"
   }
 }
 
