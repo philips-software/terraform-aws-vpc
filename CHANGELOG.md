@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 - Add additional tags to public / private subnets to make them usable in Terraform data objects
+- Add extra input variable tags, for tagging resources
 
 ### Added
 - Slack badge in documentation
