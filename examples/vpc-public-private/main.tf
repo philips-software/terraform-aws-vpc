@@ -13,4 +13,9 @@ module "vpc" {
   availability_zones = {
     eu-west-1 = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
   }
+
+  // add aditional tags
+  tags = {
+    my-tag = "my-new-tag"
+  }
 }

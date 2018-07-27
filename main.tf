@@ -6,36 +6,34 @@ terraform {
   required_version = ">= 0.8"
 }
 
+
 resource "aws_vpc" "vpc" {
   cidr_block           = "${cidrsubnet(var.cidr_block, 0, 0)}"
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  tags {
-    Name        = "${var.environment}-vpc"
-    Environment = "${var.environment}"
-    Project     = "${var.project}"
-  }
+  tags = "${merge(map("Name", format("%s-vpc", var.environment)),
+          map("Environment", format("%s", var.environment)),
+          map("Project", format("%s", var.project)),
+          var.tags)}"
 }
 
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = "${aws_vpc.vpc.id}"
 
-  tags {
-    Name        = "${var.environment}-internet-gateway"
-    Environment = "${var.environment}"
-    Project     = "${var.project}"
-  }
+  tags = "${merge(map("Name", format("%s-internet-gateway", var.environment)),
+          map("Environment", format("%s", var.environment)),
+          map("Project", format("%s", var.project)),
+          var.tags)}"
 }
 
 resource "aws_route_table" "public_routetable" {
   vpc_id = "${aws_vpc.vpc.id}"
 
-  tags {
-    Name        = "${var.environment}-public-routetable"
-    Environment = "${var.environment}"
-    Project     = "${var.project}"
-  }
+  tags = "${merge(map("Name", format("%s-public-routetable", var.environment)),
+          map("Environment", format("%s", var.environment)),
+          map("Project", format("%s", var.project)),
+          var.tags)}"
 }
 
 resource "aws_route" "public_route" {
@@ -53,12 +51,11 @@ resource "aws_subnet" "public_subnet" {
   map_public_ip_on_launch = "${var.public_subnet_map_public_ip_on_launch}"
   count                   = "${length(var.availability_zones[var.aws_region])}"
 
-  tags {
-    Name        = "${var.environment}-${element(var.availability_zones[var.aws_region], count.index)}-public"
-    Environment = "${var.environment}"
-    Project     = "${var.project}"
-    Tier        = "public"
-  }
+  tags = "${merge(map("Name", format("%s-%s-public", var.environment, element(var.availability_zones[var.aws_region], count.index))),
+          map("Environment", format("%s", var.environment)),
+          map("Project", format("%s", var.project)),
+          map("Tier", "public"),
+          var.tags)}"
 }
 
 resource "aws_route_table_association" "public_routing_table" {
@@ -71,11 +68,10 @@ resource "aws_route_table" "private_routetable" {
   count  = "${var.create_private_subnets ? 1 : 0}"
   vpc_id = "${aws_vpc.vpc.id}"
 
-  tags {
-    Name        = "${var.environment}-private-routetable"
-    Environment = "${var.environment}"
-    Project     = "${var.project}"
-  }
+  tags = "${merge(map("Name", format("%s-private-routetable", var.environment)),
+          map("Environment", format("%s", var.environment)),
+          map("Project", format("%s", var.project)),
+          var.tags)}"
 }
 
 resource "aws_route" "private_route" {
@@ -94,12 +90,11 @@ resource "aws_subnet" "private_subnet" {
   map_public_ip_on_launch = false
   count                   = "${var.create_private_subnets ? length(var.availability_zones[var.aws_region]) : 0}"
 
-  tags {
-    Name        = "${var.environment}-${element(var.availability_zones[var.aws_region], count.index)}-private"
-    Environment = "${var.environment}"
-    Project     = "${var.project}"
-    Tier        = "private"
-  }
+  tags = "${merge(map("Name", format("%s-%s-private", var.environment, element(var.availability_zones[var.aws_region], count.index))),
+          map("Environment", format("%s", var.environment)),
+          map("Project", format("%s", var.project)),
+          map("Tier", "private"),
+          var.tags)}"
 }
 
 resource "aws_route_table_association" "private_routing_table" {
@@ -123,11 +118,10 @@ resource "aws_route53_zone" "local" {
   name    = "${var.environment}.local"
   comment = "${var.environment} - route53 - local hosted zone"
 
-  tags {
-    Name        = "${var.environment}-route53-private-hosted-zone"
-    Environment = "${var.environment}"
-    Project     = "${var.project}"
-  }
+  tags = "${merge(map("Name", format("%s-route53-private-hosted-zone", var.environment)),
+          map("Environment", format("%s", var.environment)),
+          map("Project", format("%s", var.project)),
+          var.tags)}"
 
   vpc_id = "${aws_vpc.vpc.id}"
 }
