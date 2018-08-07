@@ -49,3 +49,9 @@ variable "create_private_hosted_zone" {
 variable "public_subnet_map_public_ip_on_launch" {
   default = "false"
 }
+
+variable "tags" {
+  type        = "map"
+  description = "Map of tags to apply on the resources"
+  default     = {}
+}

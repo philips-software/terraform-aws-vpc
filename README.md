@@ -24,6 +24,11 @@ module "vpc" {
   availability_zones = {
     eu-west-1 = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
   }
+  
+  // add aditional tags
+  tags = {
+    my-tag = "my-new-tag"
+  }
 }
 
 module "x" {
@@ -52,6 +57,7 @@ module "y" {
 | environment |  | string | - | yes |
 | project |  | string | `` | no |
 | public_subnet_map_public_ip_on_launch |  | string | `false` | no |
+| tags | Map of tags to apply on the resources | map | `{}` | no |
 
 ### Outputs
 
