@@ -6,7 +6,6 @@ terraform {
   required_version = ">= 0.8"
 }
 
-
 resource "aws_vpc" "vpc" {
   cidr_block           = "${cidrsubnet(var.cidr_block, 0, 0)}"
   enable_dns_support   = true
@@ -104,7 +103,8 @@ resource "aws_route_table_association" "private_routing_table" {
 }
 
 resource "aws_eip" "nat" {
-  vpc = true
+  count = "${var.create_private_subnets ? 1 : 0}"
+  vpc   = true
 }
 
 resource "aws_nat_gateway" "nat" {
