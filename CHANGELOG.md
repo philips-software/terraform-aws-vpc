@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Added condition for the EIP
 
 ## [1.1.0] - 07-07-2018
 ### Added
