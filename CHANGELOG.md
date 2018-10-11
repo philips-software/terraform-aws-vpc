@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.0] - 11-10-2018
+### Added
+- Added condition for the EIP
+
 ## [1.1.0] - 07-07-2018
 ### Added
 - Add additional tags to public / private subnets to make them usable in Terraform data objects
@@ -21,5 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix region defaults
 - Initial release, based on https://040code.github.io/2017/09/19/talk-immutable-infrastructure/
 
-[Unreleased]: https://github.com/philips-software/terraform-aws-vpc/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/philips-software/terraform-aws-vpc/compare/1.2.0...HEAD
+[1.2.0]: https://github.com/philips-software/terraform-aws-vpc/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/philips-software/terraform-aws-vpc/compare/1.0.0...1.1.0
