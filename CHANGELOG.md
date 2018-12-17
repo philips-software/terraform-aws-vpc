@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Rewrite aws_route53_zone resource to remove deprecated vpc_id
 
 ## [1.2.0] - 11-10-2018
 ### Added
