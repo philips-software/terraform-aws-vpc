@@ -123,5 +123,7 @@ resource "aws_route53_zone" "local" {
           map("Project", format("%s", var.project)),
           var.tags)}"
 
-  vpc_id = "${aws_vpc.vpc.id}"
+  vpc {
+    vpc_id = "${aws_vpc.vpc.id}"
+  }
 }
