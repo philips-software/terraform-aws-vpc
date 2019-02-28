@@ -102,6 +102,25 @@ resource "aws_route_table_association" "private_routing_table" {
   count          = "${var.create_private_subnets ? length(var.availability_zones[var.aws_region]) : 0}"
 }
 
+resource "aws_vpc_endpoint" "s3_vpc_endpoint" {
+  count = "${var.create_s3_vpc_endpoint ? 1 : 0}"
+  vpc_id = "${aws_vpc.vpc.id}"
+  service_name = "${format("com.amazonaws.%s.s3", var.aws_region)}"
+  route_table_ids = ["${aws_route_table.public_routetable.id}", "${aws_route_table.private_routetable.id}"]
+  policy = <<POLICY
+{
+    "Statement": [
+        {
+            "Action": "*",
+            "Effect": "Allow",
+            "Resource": "*",
+            "Principal": "*"
+        }
+    ]
+}
+POLICY
+}
+
 resource "aws_eip" "nat" {
   count = "${var.create_private_subnets ? 1 : 0}"
   vpc   = true

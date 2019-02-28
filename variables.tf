@@ -50,6 +50,10 @@ variable "public_subnet_map_public_ip_on_launch" {
   default = "false"
 }
 
+variable "create_s3_vpc_endpoint" {
+  default = "true"
+}
+
 variable "tags" {
   type        = "map"
   description = "Map of tags to apply on the resources"

@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Add S3 VPC endpoint by default so the access to S3 is free from within the VPC
 
 ## [1.2.1] - 20-12-2018
 ### Changed

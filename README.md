@@ -54,6 +54,7 @@ module "y" {
 | cidr_block |  | string | `10.0.0.0/16` | no |
 | create_private_hosted_zone |  | string | `true` | no |
 | create_private_subnets |  | string | `true` | no |
+| create_s3_vpc_endpoint | Whether to create a VPC Endpoint for S3, so the S3 buckets can be used from within the VPC without using the NAT gateway. | string | `true` | no |
 | environment |  | string | - | yes |
 | project |  | string | `` | no |
 | public_subnet_map_public_ip_on_launch |  | string | `false` | no |
