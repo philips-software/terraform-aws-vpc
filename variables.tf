@@ -50,6 +50,11 @@ variable "public_subnet_map_public_ip_on_launch" {
   default = "false"
 }
 
+variable "create_s3_vpc_endpoint" {
+  default = "true"
+  description = "Whether to create a VPC Endpoint for S3, so the S3 buckets can be used from within the VPC without using the NAT gateway."
+}
+
 variable "tags" {
   type        = "map"
   description = "Map of tags to apply on the resources"
