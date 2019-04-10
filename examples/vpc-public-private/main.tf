@@ -1,14 +1,13 @@
 module "vpc" {
   source = "../../"
 
-  environment = "my-awsome-project"
-  aws_region  = "eu-west-1"
+  environment = "${var.environment}"
+  aws_region  = "${var.aws_region}"
 
   // optional, defaults
   project                    = "Forest"
   create_private_hosted_zone = "false"  // default = true
   create_private_subnets     = "false"  // default = true
-  create_s3_vpc_endpoint     = "false"  // default = true
 
   // example to override default availability_zones
   availability_zones = {
