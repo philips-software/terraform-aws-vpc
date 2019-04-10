@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.0] - 10-04-2019
+### Added
+- Add S3 VPC endpoint by default so the access to S3 is free from within the VPC.
+### Changed
+- Updated terraform versions in example.
+- Removed provider from module.
+
 ## [1.2.1] - 20-12-2018
 ### Changed
 - Rewrite aws_route53_zone resource to remove deprecated vpc_id
@@ -29,7 +36,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix region defaults
 - Initial release, based on https://040code.github.io/2017/09/19/talk-immutable-infrastructure/
 
-[Unreleased]: https://github.com/philips-software/terraform-aws-vpc/compare/1.2.1...HEAD
+[Unreleased]: https://github.com/philips-software/terraform-aws-vpc/compare/1.3.0...HEAD
+[1.3.0]: https://github.com/philips-software/terraform-aws-vpc/compare/1.2.1...1.3.0
 [1.2.1]: https://github.com/philips-software/terraform-aws-vpc/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/philips-software/terraform-aws-vpc/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/philips-software/terraform-aws-vpc/compare/1.0.0...1.1.0

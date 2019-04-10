@@ -1,8 +1,8 @@
 module "vpc" {
   source = "../../"
 
-  environment = "my-awsome-project"
-  aws_region  = "eu-west-1"
+  environment = "${var.environment}"
+  aws_region  = "${var.aws_region}"
 
   // optional, defaults
   project                    = "Forest"
