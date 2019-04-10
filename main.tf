@@ -112,18 +112,6 @@ resource "aws_vpc_endpoint" "s3_vpc_endpoint" {
   vpc_id = "${aws_vpc.vpc.id}"
   service_name = "${data.aws_vpc_endpoint_service.s3.service_name}"
   route_table_ids = ["${aws_route_table.public_routetable.id}", "${aws_route_table.private_routetable.id}"]
-  policy = <<POLICY
-{
-    "Statement": [
-        {
-            "Action": "*",
-            "Effect": "Allow",
-            "Resource": "*",
-            "Principal": "*"
-        }
-    ]
-}
-POLICY
 }
 
 resource "aws_eip" "nat" {
