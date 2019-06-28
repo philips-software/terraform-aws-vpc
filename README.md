@@ -24,7 +24,7 @@ module "vpc" {
   availability_zones = {
     eu-west-1 = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
   }
-  
+
   // add aditional tags
   tags = {
     my-tag = "my-new-tag"
@@ -45,7 +45,8 @@ module "y" {
 }
 ```
 
-### Inputs
+
+## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
@@ -54,12 +55,13 @@ module "y" {
 | cidr_block |  | string | `10.0.0.0/16` | no |
 | create_private_hosted_zone |  | string | `true` | no |
 | create_private_subnets |  | string | `true` | no |
+| create_s3_vpc_endpoint | Whether to create a VPC Endpoint for S3, so the S3 buckets can be used from within the VPC without using the NAT gateway. | string | `true` | no |
 | environment |  | string | - | yes |
 | project |  | string | `` | no |
 | public_subnet_map_public_ip_on_launch |  | string | `false` | no |
-| tags | Map of tags to apply on the resources | map | `{}` | no |
+| tags | Map of tags to apply on the resources | map | `<map>` | no |
 
-### Outputs
+## Outputs
 
 | Name | Description |
 |------|-------------|
@@ -68,7 +70,9 @@ module "y" {
 | private_dns_zone_id | ID of the the private DNS zone, optional. |
 | private_domain_name | Private domain name, optional. |
 | private_subnets | List of the private subnets. |
+| private_subnets_route_table |  |
 | public_subnets | List of the public subnets. |
+| public_subnets_route_table |  |
 | vpc_cidr | VPC CDIR. |
 | vpc_id | ID of the VPC. |
 

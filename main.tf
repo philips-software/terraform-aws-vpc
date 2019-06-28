@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "${var.aws_region}"
-}
-
 terraform {
   required_version = ">= 0.8"
 }
@@ -103,8 +99,21 @@ resource "aws_route_table_association" "private_routing_table" {
   count          = "${var.create_private_subnets ? length(var.availability_zones[var.aws_region]) : 0}"
 }
 
+data "aws_vpc_endpoint_service" "s3" {
+  count   = "${var.create_s3_vpc_endpoint ? 1 : 0}"
+  service = "s3"
+}
+
+resource "aws_vpc_endpoint" "s3_vpc_endpoint" {
+  count           = "${var.create_s3_vpc_endpoint ? 1 : 0}"
+  vpc_id          = "${aws_vpc.vpc.id}"
+  service_name    = "${data.aws_vpc_endpoint_service.s3.service_name}"
+  route_table_ids = ["${concat(aws_route_table.public_routetable.*.id, aws_route_table.private_routetable.*.id)}"]
+}
+
 resource "aws_eip" "nat" {
-  vpc = true
+  count = "${var.create_private_subnets ? 1 : 0}"
+  vpc   = true
 }
 
 resource "aws_nat_gateway" "nat" {
@@ -123,5 +132,7 @@ resource "aws_route53_zone" "local" {
           map("Project", format("%s", var.project)),
           var.tags)}"
 
-  vpc_id = "${aws_vpc.vpc.id}"
+  vpc {
+    vpc_id = "${aws_vpc.vpc.id}"
+  }
 }
