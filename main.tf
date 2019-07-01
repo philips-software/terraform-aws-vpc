@@ -171,6 +171,11 @@ resource "aws_vpc_endpoint" "s3_vpc_endpoint" {
   vpc_id          = "${aws_vpc.vpc.id}"
   service_name    = "${data.aws_vpc_endpoint_service.s3.service_name}"
   route_table_ids = ["${concat(aws_route_table.public_routetable.*.id, aws_route_table.private_routetable.*.id)}"]
+
+  tags = "${merge(map("Name", format("%s-s3-endpoint", var.environment)),
+          map("Environment", format("%s", var.environment)),
+          map("Project", format("%s", var.project)),
+          var.tags)}"
 }
 
 resource "aws_eip" "nat" {
