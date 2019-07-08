@@ -13,6 +13,69 @@ resource "aws_vpc" "vpc" {
           var.tags)}"
 }
 
+resource "aws_default_network_acl" "default" {
+  default_network_acl_id = "${aws_vpc.vpc.default_network_acl_id}"
+
+  ingress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  egress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  tags = "${merge(map("Name", format("%s-acl", var.environment)),
+          map("Environment", format("%s", var.environment)),
+          map("Project", format("%s", var.project)),
+          var.tags)}"
+
+  lifecycle {
+    ignore_changes = ["subnet_ids"]
+  }
+}
+
+resource "aws_default_route_table" "route_table" {
+  default_route_table_id = "${aws_vpc.vpc.default_route_table_id}"
+
+  tags = "${merge(map("Name", format("%s-default-routetable", var.environment)),
+          map("Environment", format("%s", var.environment)),
+          map("Project", format("%s", var.project)),
+          var.tags)}"
+}
+
+resource "aws_default_security_group" "default" {
+  vpc_id = "${aws_vpc.vpc.id}"
+
+  ingress {
+    protocol  = -1
+    self      = true
+    from_port = 0
+    to_port   = 0
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = "${merge(map("Name", format("%s-default-sg", var.environment)),
+          map("Environment", format("%s", var.environment)),
+          map("Project", format("%s", var.project)),
+          var.tags)}"
+}
+
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = "${aws_vpc.vpc.id}"
 
@@ -108,17 +171,32 @@ resource "aws_vpc_endpoint" "s3_vpc_endpoint" {
   vpc_id          = "${aws_vpc.vpc.id}"
   service_name    = "${data.aws_vpc_endpoint_service.s3.service_name}"
   route_table_ids = ["${concat(aws_route_table.public_routetable.*.id, aws_route_table.private_routetable.*.id)}"]
+
+  tags = "${merge(map("Name", format("%s-s3-endpoint", var.environment)),
+          map("Environment", format("%s", var.environment)),
+          map("Project", format("%s", var.project)),
+          var.tags)}"
 }
 
 resource "aws_eip" "nat" {
   count = "${var.create_private_subnets ? 1 : 0}"
   vpc   = true
+
+  tags = "${merge(map("Name", format("%s-eip", var.environment)),
+           map("Environment", format("%s", var.environment)),
+           map("Project", format("%s", var.project)),
+           var.tags)}"
 }
 
 resource "aws_nat_gateway" "nat" {
   count         = "${var.create_private_subnets ? 1 : 0}"
   allocation_id = "${aws_eip.nat.id}"
   subnet_id     = "${aws_subnet.public_subnet.0.id}"
+
+  tags = "${merge(map("Name", format("%s-nat-gateway", var.environment)),
+          map("Environment", format("%s", var.environment)),
+          map("Project", format("%s", var.project)),
+          var.tags)}"
 }
 
 resource "aws_route53_zone" "local" {

@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Make automatically created (default) resources managed by Terraform (ACL, SG and RT)
+- Add tags to all created resources.
 
 ## [1.3.0] - 10-04-2019
 ### Added
