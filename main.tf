@@ -136,9 +136,9 @@ resource "aws_route" "private_route" {
   count      = "${var.create_private_subnets ? 1 : 0}"
   depends_on = ["aws_route_table.private_routetable"]
 
-  route_table_id         = "${aws_route_table.private_routetable.id}"
+  route_table_id         = "${element(aws_route_table.private_routetable.*.id, 0)}"
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = "${aws_nat_gateway.nat.id}"
+  nat_gateway_id         = "${element(aws_nat_gateway.nat.*.id, 0)}"
 }
 
 resource "aws_subnet" "private_subnet" {
@@ -157,7 +157,7 @@ resource "aws_subnet" "private_subnet" {
 
 resource "aws_route_table_association" "private_routing_table" {
   subnet_id      = "${element(aws_subnet.private_subnet.*.id, count.index)}"
-  route_table_id = "${aws_route_table.private_routetable.id}"
+  route_table_id = "${element(aws_route_table.private_routetable.*.id, 0)}"
   count          = "${var.create_private_subnets ? length(var.availability_zones[var.aws_region]) : 0}"
 }
 
@@ -167,15 +167,28 @@ data "aws_vpc_endpoint_service" "s3" {
 }
 
 resource "aws_vpc_endpoint" "s3_vpc_endpoint" {
-  count           = "${var.create_s3_vpc_endpoint ? 1 : 0}"
-  vpc_id          = "${aws_vpc.vpc.id}"
-  service_name    = "${data.aws_vpc_endpoint_service.s3.service_name}"
-  route_table_ids = ["${concat(aws_route_table.public_routetable.*.id, aws_route_table.private_routetable.*.id)}"]
+  count        = "${var.create_s3_vpc_endpoint ? 1 : 0}"
+  vpc_id       = "${aws_vpc.vpc.id}"
+  service_name = "${element(data.aws_vpc_endpoint_service.s3.*.service_name, 0)}"
 
   tags = "${merge(map("Name", format("%s-s3-endpoint", var.environment)),
           map("Environment", format("%s", var.environment)),
           map("Project", format("%s", var.project)),
           var.tags)}"
+}
+
+resource "aws_vpc_endpoint_route_table_association" "private_s3" {
+  count = "${var.create_s3_vpc_endpoint && var.create_private_subnets ? 1 : 0}"
+
+  vpc_endpoint_id = "${element(aws_vpc_endpoint.s3_vpc_endpoint.*.id, 0)}"
+  route_table_id  = "${element(aws_route_table.private_routetable.*.id, count.index)}"
+}
+
+resource "aws_vpc_endpoint_route_table_association" "public_s3" {
+  count = "${var.create_s3_vpc_endpoint ? 1 : 0}"
+
+  vpc_endpoint_id = "${element(aws_vpc_endpoint.s3_vpc_endpoint.*.id, 0)}"
+  route_table_id  = "${element(aws_route_table.public_routetable.*.id, count.index)}"
 }
 
 resource "aws_eip" "nat" {
@@ -190,7 +203,7 @@ resource "aws_eip" "nat" {
 
 resource "aws_nat_gateway" "nat" {
   count         = "${var.create_private_subnets ? 1 : 0}"
-  allocation_id = "${aws_eip.nat.id}"
+  allocation_id = "${element(aws_eip.nat.*.id, 0)}"
   subnet_id     = "${aws_subnet.public_subnet.0.id}"
 
   tags = "${merge(map("Name", format("%s-nat-gateway", var.environment)),
