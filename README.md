@@ -45,7 +45,6 @@ module "y" {
 }
 ```
 
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -73,7 +72,6 @@ module "y" {
 | private\_subnets\_route\_table |  |
 | public\_subnets | List of the public subnets. |
 | public\_subnets\_route\_table |  |
-| test |  |
 | vpc\_cidr | VPC CDIR. |
 | vpc\_id | ID of the VPC. |
 

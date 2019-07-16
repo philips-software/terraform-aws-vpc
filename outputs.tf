@@ -45,8 +45,3 @@ output "public_subnets_route_table" {
 output "private_subnets_route_table" {
   value = "${element(concat(aws_route_table.private_routetable.*.id, list("")), 0)}"
 }
-
-output "test" {
-  value = "${compact(concat(concat(aws_route_table.public_routetable.*.id, list("")),
-                        concat(aws_route_table.private_routetable.*.id, list(""))))}"
-}
