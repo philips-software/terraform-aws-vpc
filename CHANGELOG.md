@@ -43,7 +43,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Initial release, based on https://040code.github.io/2017/09/19/talk-immutable-infrastructure/
 
 [Unreleased]: https://github.com/philips-software/terraform-aws-vpc/compare/1.4.0...HEAD
-[1.4.0]: https://github.com/philips-software/terraform-aws-vpc/compare/1.3.0...1.3.0
+[1.4.0]: https://github.com/philips-software/terraform-aws-vpc/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/philips-software/terraform-aws-vpc/compare/1.2.1...1.3.0
 [1.2.1]: https://github.com/philips-software/terraform-aws-vpc/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/philips-software/terraform-aws-vpc/compare/1.1.0...1.2.0
