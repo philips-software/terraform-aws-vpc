@@ -1,8 +1,10 @@
 module "vpc" {
+  # source  = "philips-software/vpc/aws"
+  # version = "1.3.0"
   source = "../../"
 
-  environment = "${var.environment}"
-  aws_region  = "${var.aws_region}"
+  environment = var.environment
+  aws_region  = var.aws_region
 
   // optional, defaults
   project = "Forest"
@@ -17,3 +19,4 @@ module "vpc" {
     my-tag = "my-new-tag"
   }
 }
+
