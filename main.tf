@@ -4,17 +4,8 @@ data "aws_availability_zones" "available" {
 
 locals {
   az = length(var.availability_zones) > 0 ? var.availability_zones : data.aws_availability_zones.available.names
-}
 
-resource "aws_vpc" "vpc" {
-  cidr_block           = cidrsubnet(var.cidr_block, 0, 0)
-  enable_dns_support   = true
-  enable_dns_hostnames = true
-
-  tags = merge(
-    {
-      "Name" = format("%s-vpc", var.environment)
-    },
+  tags_without_name = merge(
     {
       "Environment" = format("%s", var.environment)
     },
@@ -23,6 +14,20 @@ resource "aws_vpc" "vpc" {
     },
     var.tags,
   )
+  tags = merge(
+    {
+      "Name" = format("%s-vpc", var.environment)
+    },
+    local.tags_without_name,
+  )
+}
+
+resource "aws_vpc" "vpc" {
+  cidr_block           = cidrsubnet(var.cidr_block, 0, 0)
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  tags = local.tags
 }
 
 resource "aws_default_network_acl" "default" {
@@ -46,18 +51,7 @@ resource "aws_default_network_acl" "default" {
     to_port    = 0
   }
 
-  tags = merge(
-    {
-      "Name" = format("%s-acl", var.environment)
-    },
-    {
-      "Environment" = format("%s", var.environment)
-    },
-    {
-      "Project" = format("%s", var.project)
-    },
-    var.tags,
-  )
+  tags = local.tags
 
   lifecycle {
     ignore_changes = [subnet_ids]
@@ -67,18 +61,7 @@ resource "aws_default_network_acl" "default" {
 resource "aws_default_route_table" "route_table" {
   default_route_table_id = aws_vpc.vpc.default_route_table_id
 
-  tags = merge(
-    {
-      "Name" = format("%s-default-routetable", var.environment)
-    },
-    {
-      "Environment" = format("%s", var.environment)
-    },
-    {
-      "Project" = format("%s", var.project)
-    },
-    var.tags,
-  )
+  tags = local.tags
 }
 
 resource "aws_default_security_group" "default" {
@@ -98,52 +81,19 @@ resource "aws_default_security_group" "default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(
-    {
-      "Name" = format("%s-default-sg", var.environment)
-    },
-    {
-      "Environment" = format("%s", var.environment)
-    },
-    {
-      "Project" = format("%s", var.project)
-    },
-    var.tags,
-  )
+  tags = local.tags
 }
 
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id
 
-  tags = merge(
-    {
-      "Name" = format("%s-internet-gateway", var.environment)
-    },
-    {
-      "Environment" = format("%s", var.environment)
-    },
-    {
-      "Project" = format("%s", var.project)
-    },
-    var.tags,
-  )
+  tags = local.tags
 }
 
 resource "aws_route_table" "public_routetable" {
   vpc_id = aws_vpc.vpc.id
 
-  tags = merge(
-    {
-      "Name" = format("%s-public-routetable", var.environment)
-    },
-    {
-      "Environment" = format("%s", var.environment)
-    },
-    {
-      "Project" = format("%s", var.project)
-    },
-    var.tags,
-  )
+  tags = local.tags
 }
 
 resource "aws_route" "public_route" {
@@ -170,15 +120,9 @@ resource "aws_subnet" "public_subnet" {
       )
     },
     {
-      "Environment" = format("%s", var.environment)
-    },
-    {
-      "Project" = format("%s", var.project)
-    },
-    {
       "Tier" = "public"
     },
-    var.tags,
+    local.tags_without_name,
   )
 }
 
@@ -192,18 +136,7 @@ resource "aws_route_table" "private_routetable" {
   count  = var.create_private_subnets ? 1 : 0
   vpc_id = aws_vpc.vpc.id
 
-  tags = merge(
-    {
-      "Name" = format("%s-private-routetable", var.environment)
-    },
-    {
-      "Environment" = format("%s", var.environment)
-    },
-    {
-      "Project" = format("%s", var.project)
-    },
-    var.tags,
-  )
+  tags = local.tags
 }
 
 resource "aws_route" "private_route" {
@@ -236,15 +169,9 @@ resource "aws_subnet" "private_subnet" {
       )
     },
     {
-      "Environment" = format("%s", var.environment)
-    },
-    {
-      "Project" = format("%s", var.project)
-    },
-    {
       "Tier" = "private"
     },
-    var.tags,
+    local.tags_without_name,
   )
 }
 
@@ -264,18 +191,7 @@ resource "aws_vpc_endpoint" "s3_vpc_endpoint" {
   vpc_id       = aws_vpc.vpc.id
   service_name = element(data.aws_vpc_endpoint_service.s3.*.service_name, 0)
 
-  tags = merge(
-    {
-      "Name" = format("%s-s3-endpoint", var.environment)
-    },
-    {
-      "Environment" = format("%s", var.environment)
-    },
-    {
-      "Project" = format("%s", var.project)
-    },
-    var.tags,
-  )
+  tags = local.tags
 }
 
 resource "aws_vpc_endpoint_route_table_association" "private_s3" {
@@ -296,18 +212,7 @@ resource "aws_eip" "nat" {
   count = var.create_private_subnets ? 1 : 0
   vpc   = true
 
-  tags = merge(
-    {
-      "Name" = format("%s-eip", var.environment)
-    },
-    {
-      "Environment" = format("%s", var.environment)
-    },
-    {
-      "Project" = format("%s", var.project)
-    },
-    var.tags,
-  )
+  tags = local.tags
 }
 
 resource "aws_nat_gateway" "nat" {
@@ -315,18 +220,7 @@ resource "aws_nat_gateway" "nat" {
   allocation_id = element(aws_eip.nat.*.id, 0)
   subnet_id     = aws_subnet.public_subnet[0].id
 
-  tags = merge(
-    {
-      "Name" = format("%s-nat-gateway", var.environment)
-    },
-    {
-      "Environment" = format("%s", var.environment)
-    },
-    {
-      "Project" = format("%s", var.project)
-    },
-    var.tags,
-  )
+  tags = local.tags
 }
 
 resource "aws_route53_zone" "local" {
@@ -334,18 +228,7 @@ resource "aws_route53_zone" "local" {
   name    = "${var.environment}.local"
   comment = "${var.environment} - route53 - local hosted zone"
 
-  tags = merge(
-    {
-      "Name" = format("%s-route53-private-hosted-zone", var.environment)
-    },
-    {
-      "Environment" = format("%s", var.environment)
-    },
-    {
-      "Project" = format("%s", var.project)
-    },
-    var.tags,
-  )
+  tags = local.tags
 
   vpc {
     vpc_id = aws_vpc.vpc.id
