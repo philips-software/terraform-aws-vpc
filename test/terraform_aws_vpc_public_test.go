@@ -59,16 +59,9 @@ func TestTerraformAwsVpcPublic(t *testing.T) {
 
 	// Verify results only contains one VPC
 	assert.Equal(t, 1, len(vpcOutput.Vpcs))
-	var environmentTag ec2.Tag
 
-	for _, v := range vpcOutput.Vpcs[0].Tags {
-		if *v.Key == "Environment" {
-			environmentTag = *v
-		}
-	}
-
-	// Verify environment tag
-	assert.Equal(t, environment, *environmentTag.Value)
+	// verify environment tag
+	checkEnvironmentTag(t, vpcOutput.Vpcs[0].Tags, environment)
 
 	// Check number of subnets, should be equal to AZ.
 	subnets, err := svc.DescribeSubnets(&ec2.DescribeSubnetsInput{
@@ -80,9 +73,27 @@ func TestTerraformAwsVpcPublic(t *testing.T) {
 	az, err := svc.DescribeAvailabilityZones(&ec2.DescribeAvailabilityZonesInput{})
 	assert.Equal(t, len(az.AvailabilityZones), len(subnets.Subnets))
 
+	// verify environment tag
+	for _, v := range subnets.Subnets {
+		checkEnvironmentTag(t, v.Tags, environment)
+	}
+
 	if err != nil {
 		fmt.Println("Something wrong :( - TODO handle errors", err)
 		return
 	}
+
+}
+
+func checkEnvironmentTag(t *testing.T, tags []*ec2.Tag, environmentName string) {
+	var environmentTag ec2.Tag
+	for _, v := range tags {
+		if *v.Key == "Environment" {
+			environmentTag = *v
+		}
+	}
+
+	// Verify environment tag
+	assert.Equal(t, environmentName, *environmentTag.Value)
 
 }
