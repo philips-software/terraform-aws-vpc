@@ -52,6 +52,14 @@
   version = "v1.1.1"
 
 [[projects]]
+  digest = "1:cd035e5ac0430369f9faf142efd21252ac39629139fe41b75efa09d449b7f9f0"
+  name = "github.com/gruntwork-io/terratest"
+  packages = ["modules/random"]
+  pruneopts = "UT"
+  revision = "7c4706e3a7994db351b18915bf44a5b69fdeeaa8"
+  version = "v0.18.3"
+
+[[projects]]
   digest = "1:bb81097a5b62634f3e9fec1014657855610c82d19b9a40c17612e32651e35dca"
   name = "github.com/jmespath/go-jmespath"
   packages = ["."]
@@ -81,6 +89,7 @@
     "github.com/aws/aws-sdk-go/aws",
     "github.com/aws/aws-sdk-go/aws/session",
     "github.com/aws/aws-sdk-go/service/ec2",
+    "github.com/gruntwork-io/terratest/modules/random",
     "github.com/stretchr/testify/assert",
   ]
   solver-name = "gps-cdcl"

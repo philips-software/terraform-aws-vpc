@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
+	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,7 +17,7 @@ func TestTerraformAwsVpcPublic(t *testing.T) {
 	t.Parallel()
 
 	// Set name for the test environment.
-	environment := fmt.Sprintf("terratest-aws-vpc-%s", "qgEDYE-vpc")
+	environment := fmt.Sprintf("terratest-aws-vpc-%s", random.UniqueId())
 
 	// Set an AWS region
 	awsRegion := "eu-central-1"
@@ -39,8 +40,8 @@ func TestTerraformAwsVpcPublic(t *testing.T) {
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer terraform.Destroy(t, terraformOptions)
 
-	// his will run `terraform init` and `terraform apply` and fail the test if there are any errors
-	terraform.Plan(t, terraformOptions)
+	// This will run `terraform init` and `terraform apply` and fail the test if there are any errors
+	terraform.InitAndApply(t, terraformOptions)
 
 	// Find vpc-id in the terraform output
 	vpcID := terraform.Output(t, terraformOptions, "vpc_id")
@@ -58,18 +59,16 @@ func TestTerraformAwsVpcPublic(t *testing.T) {
 
 	// Verify results only contains one VPC
 	assert.Equal(t, 1, len(vpcOutput.Vpcs))
-	tags := vpcOutput.Vpcs[0].Tags
-	var nameTag ec2.Tag
+	var environmentTag ec2.Tag
 
-	for _, v := range tags {
-		if *v.Key == "Name" {
-			fmt.Println("Value: ", *v.Value)
-			nameTag = *v
+	for _, v := range vpcOutput.Vpcs[0].Tags {
+		if *v.Key == "Environment" {
+			environmentTag = *v
 		}
 	}
 
 	// Verify environment tag
-	assert.Equal(t, environment, *nameTag.Value)
+	assert.Equal(t, environment, *environmentTag.Value)
 
 	// Check number of subnets, should be equal to AZ.
 	subnets, err := svc.DescribeSubnets(&ec2.DescribeSubnetsInput{
