@@ -31,6 +31,8 @@ resource "aws_vpc" "vpc" {
 }
 
 resource "aws_default_network_acl" "default" {
+  count = var.enable_create_defaults ? 1 : 0
+
   default_network_acl_id = aws_vpc.vpc.default_network_acl_id
 
   ingress {
@@ -59,12 +61,16 @@ resource "aws_default_network_acl" "default" {
 }
 
 resource "aws_default_route_table" "route_table" {
+  count = var.enable_create_defaults ? 1 : 0
+
   default_route_table_id = aws_vpc.vpc.default_route_table_id
 
   tags = local.tags
 }
 
 resource "aws_default_security_group" "default" {
+  count = var.enable_create_defaults ? 1 : 0
+
   vpc_id = aws_vpc.vpc.id
 
   ingress {

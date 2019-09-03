@@ -56,3 +56,8 @@ variable "tags" {
   default     = {}
 }
 
+variable "enable_create_defaults" {
+  description = "Disable managing the default resources."
+  type        = bool
+  default     = true
+}
