@@ -13,7 +13,7 @@ See the [examples](./examples) for executable examples.
 
 ```
 module "vpc" {
-  source = "github.com/philips-software/terraform-aws-vpc.git?ref=1.0.0"
+  source = "github.com/philips-software/terraform-aws-vpc.git?ref=2.0.0"
 
   environment = "my-awsome-project"
   aws_region  = "eu-west-1"
