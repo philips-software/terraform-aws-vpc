@@ -1,8 +1,6 @@
-# VPC - public subnets
+# VPC - Terraform 0.12 example
 
-This example shows the basic usages of the module.
-- Public vate subnets.
-- Subnets in zones: `eu-west-1a` and `eu-west-1b`
+This examples is similar to the [public private vpc example](../vpc-public-private) but usages Terraform 0.12 instead of 0.11.
 
 ## Prerequisites for running the example
 Terraform is managed via the tool `tfenv`. Ensure you have installed [tfenv](https://github.com/kamatama41/tfenv). And install via tfenv the required terraform version as listed in `.terraform-version`

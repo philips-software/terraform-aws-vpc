@@ -1,4 +1,6 @@
 module "vpc" {
+  # source  = "philips-software/vpc/aws"
+  # version = "1.3.0"
   source = "../../"
 
   environment = var.environment
@@ -7,13 +9,14 @@ module "vpc" {
   // optional, defaults
   project = "Forest"
 
-  create_private_subnets = false
-
   // example to override default availability_zones
-  availability_zones = ["eu-west-1a", "eu-west-1b"]
+  availability_zones = {
+    eu-west-1 = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  }
 
   // add aditional tags
   tags = {
     my-tag = "my-new-tag"
   }
 }
+

@@ -1,8 +1,7 @@
 variable "aws_region" {
-  type = string
+  type = "string"
 }
 
 variable "environment" {
-  type = string
+  type = "string"
 }
-
