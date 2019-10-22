@@ -58,14 +58,14 @@ variable "tags" {
 
 variable "public_subnet_tags" {
   description = "Map of tags to apply on the public subnets"
-  type = map(string)
-  default = {} 
+  type        = map(string)
+  default     = {}
 }
 
 variable "private_subnet_tags" {
   description = "Map of tags to apply on the private subnets"
-  type = map(string)
-  default = {}
+  type        = map(string)
+  default     = {}
 }
 
 variable "enable_create_defaults" {
