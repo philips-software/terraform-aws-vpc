@@ -26,7 +26,6 @@ resource "aws_vpc" "vpc" {
   cidr_block           = cidrsubnet(var.cidr_block, 0, 0)
   enable_dns_support   = true
   enable_dns_hostnames = true
-
   tags = local.tags
 }
 
@@ -129,6 +128,7 @@ resource "aws_subnet" "public_subnet" {
       "Tier" = "public"
     },
     local.tags_without_name,
+    var.public_subnet_tags
   )
 }
 
@@ -178,6 +178,7 @@ resource "aws_subnet" "private_subnet" {
       "Tier" = "private"
     },
     local.tags_without_name,
+    var.private_subnet_tags
   )
 }
 
