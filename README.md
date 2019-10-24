@@ -45,7 +45,7 @@ module "vpc" {
 | create\_private\_hosted\_zone               | Indicate to create a private hosted zone.                                                                                 |    bool     |    `"true"`     |    no    |
 | create\_private\_subnets                    | Indicates to create private subnets.                                                                                      |    bool     |    `"true"`     |    no    |
 | create\_s3\_vpc\_endpoint                   | Whether to create a VPC Endpoint for S3, so the S3 buckets can be used from within the VPC without using the NAT gateway. |    bool     |    `"true"`     |    no    |
-| enable\_create\_defaults                    | Disable managing the default resources.                                                                                   |    bool     |    `"true"`     |    no    |
+| enable\_create\_defaults                    | Add tags to the default resources.                                                                                        |    bool     |    `"false"`    |    no    |
 | environment                                 | Environment name, will be added for resource tagging.                                                                     |   string    |       n/a       |   yes    |
 | private\_subnet\_tags                       | Map of tags to apply on the private subnets                                                                               | map(string) |     `<map>`     |    no    |
 | project                                     | Project name, will be added for resource tagging.                                                                         |   string    |      `""`       |    no    |
