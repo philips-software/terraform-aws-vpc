@@ -5,10 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### Migration to Terraform 0.12
-Module is migrated to terraform 0.12, a few changes where applied. The example `vpc-public-private` is backwards compatible. The output type is changed for a few outputs.
-- input: `availability_zones` - replaced by a list over write the default which create in each zone a subnet.
-- output: `public_subnets` and `private_subnets` - redundant wrapper list removed. Output is a flat list.
+
+- Changed variable `enable_create_defaults` default from `true` to `false`. 
 
 ## [2.0.0] - 03-09-2019
 - Upgrade to terraform 0.12, Migration directions:

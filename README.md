@@ -34,6 +34,7 @@ module "vpc" {
   }
 }
 ```
+
 ## Inputs
 
 | Name                                        | Description                                                                                                               |    Type     |     Default     | Required |
@@ -44,7 +45,7 @@ module "vpc" {
 | create\_private\_hosted\_zone               | Indicate to create a private hosted zone.                                                                                 |    bool     |    `"true"`     |    no    |
 | create\_private\_subnets                    | Indicates to create private subnets.                                                                                      |    bool     |    `"true"`     |    no    |
 | create\_s3\_vpc\_endpoint                   | Whether to create a VPC Endpoint for S3, so the S3 buckets can be used from within the VPC without using the NAT gateway. |    bool     |    `"true"`     |    no    |
-| enable\_create\_defaults                    | Disable managing the default resources.                                                                                   |    bool     |    `"true"`     |    no    |
+| enable\_create\_defaults                    | Add tags to the default resources.                                                                                        |    bool     |    `"false"`    |    no    |
 | environment                                 | Environment name, will be added for resource tagging.                                                                     |   string    |       n/a       |   yes    |
 | project                                     | Project name, will be added for resource tagging.                                                                         |   string    |      `""`       |    no    |
 | public\_subnet\_map\_public\_ip\_on\_launch | Enable public ip creaton by default on EC2 instance launch.                                                               |    bool     |    `"false"`    |    no    |
@@ -64,6 +65,7 @@ module "vpc" {
 | public\_subnets\_route\_table  |                                           |
 | vpc\_cidr                      | VPC CDIR.                                 |
 | vpc\_id                        | ID of the VPC.                            |
+
 ## Automated checks
 Currently the automated checks are limited. In CI the following checks are done for the root and each example.
 - lint: `terraform validate` and `terraform fmt`
