@@ -45,10 +45,12 @@ module "vpc" {
 | create\_private\_hosted\_zone               | Indicate to create a private hosted zone.                                                                                 |    bool     |    `"true"`     |    no    |
 | create\_private\_subnets                    | Indicates to create private subnets.                                                                                      |    bool     |    `"true"`     |    no    |
 | create\_s3\_vpc\_endpoint                   | Whether to create a VPC Endpoint for S3, so the S3 buckets can be used from within the VPC without using the NAT gateway. |    bool     |    `"true"`     |    no    |
-| enable\_create\_defaults                    | Add tags to the default resources.                                                                                        |    bool     |    `"false"`    |    no    |
+| enable\_create\_defaults                    | Disable managing the default resources.                                                                                   |    bool     |    `"true"`     |    no    |
 | environment                                 | Environment name, will be added for resource tagging.                                                                     |   string    |       n/a       |   yes    |
+| private\_subnet\_tags                       | Map of tags to apply on the private subnets                                                                               | map(string) |     `<map>`     |    no    |
 | project                                     | Project name, will be added for resource tagging.                                                                         |   string    |      `""`       |    no    |
 | public\_subnet\_map\_public\_ip\_on\_launch | Enable public ip creaton by default on EC2 instance launch.                                                               |    bool     |    `"false"`    |    no    |
+| public\_subnet\_tags                        | Map of tags to apply on the public subnets                                                                                | map(string) |     `<map>`     |    no    |
 | tags                                        | Map of tags to apply on the resources                                                                                     | map(string) |     `<map>`     |    no    |
 
 ## Outputs
@@ -65,6 +67,40 @@ module "vpc" {
 | public\_subnets\_route\_table  |                                           |
 | vpc\_cidr                      | VPC CDIR.                                 |
 | vpc\_id                        | ID of the VPC.                            |
+
+# VPC for Amazon EKS
+
+Amazon EKS (Elastic Kubernetes Service) requires that both VPCs and Subnets (public and private) are tagged specifically with certain values according to the [aws-eks-docs].
+
+Therefore, if the VPC created using this module is targeted for EKS, tag it with
+
+```terraform
+  tags = {
+    "kubernetes.io/cluster/<cluster-name>" = "my-new-tag"
+  }
+```
+
+## Subnets Tags
+
+As stated above, tagging the subnets is also mandatory for EKS Clusters. The tags for public and private subnets are as follows, respectively:
+
+### Public Subnet Tags
+
+```terraform
+  public_subnet_tags = {
+    "kubernetes.io/cluster/<cluster_name>" = "shared"
+    "kubernetes.io/role/elb"               = "1"
+  }
+```
+
+### Private Subnet Tags
+
+```terraform
+  private_subnet_tags = {
+    "kubernetes.io/cluster/<cluster_name>" = "shared"
+    "kubernetes.io/role/internal-elb"      = "1"
+  }
+```
 
 ## Automated checks
 Currently the automated checks are limited. In CI the following checks are done for the root and each example.
@@ -95,3 +131,4 @@ This module is part of the Philips Forest.
 Talk to the forestkeepers in the `forest`-channel on Slack.
 
 [![Slack](https://philips-software-slackin.now.sh/badge.svg)](https://philips-software-slackin.now.sh)
+[aws-eks-docs]: https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
