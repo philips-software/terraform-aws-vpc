@@ -16,4 +16,13 @@ module "vpc" {
   tags = {
     my-tag = "my-new-tag"
   }
+
+  // add tags on the subnets. Mostly useful when creating EKS clusters
+  public_subnet_tags = {
+    my-public-subnet-tag = "my-public-subnet-tag-value"
+  }
+
+  private_subnet_tags = {
+    my-private-subnet-tag = "my-private-subnet-tag-value"
+  }
 }
