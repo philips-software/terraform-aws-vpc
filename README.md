@@ -66,6 +66,41 @@ module "vpc" {
 | public\_subnets\_route\_table |  |
 | vpc\_cidr | VPC CDIR. |
 | vpc\_id | ID of the VPC. |
+
+# VPC for Amazon EKS
+
+Amazon EKS (Elastic Kubernetes Service) requires that both VPCs and Subnets (public and private) are tagged specifically with certain values according to the [aws-eks-docs].
+
+Therefore, if the VPC created using this module is targeted for EKS, tag it with
+
+```terraform
+  tags = {
+    "kubernetes.io/cluster/<cluster-name>" = "my-new-tag"
+  }
+```
+
+## Subnets Tags
+
+As stated above, tagging the subnets is also mandatory for EKS Clusters. The tags for public and private subnets are as follows, respectively:
+
+### Public Subnet Tags
+
+```terraform
+  public_subnet_tags = {
+    "kubernetes.io/cluster/<cluster_name>" = "shared"
+    "kubernetes.io/role/elb"               = "1"
+  }
+```
+
+### Private Subnet Tags
+
+```terraform
+  private_subnet_tags = {
+    "kubernetes.io/cluster/<cluster_name>" = "shared"
+    "kubernetes.io/role/internal-elb"      = "1"
+  }
+```
+
 ## Automated checks
 Currently the automated checks are limited. In CI the following checks are done for the root and each example.
 - lint: `terraform validate` and `terraform fmt`
@@ -95,3 +130,4 @@ This module is part of the Philips Forest.
 Talk to the forestkeepers in the `forest`-channel on Slack.
 
 [![Slack](https://philips-software-slackin.now.sh/badge.svg)](https://philips-software-slackin.now.sh)
+[aws-eks-docs]: https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html

@@ -19,6 +19,7 @@ module "vpc" {
 
   // add tags on the subnets. Mostly useful when creating EKS clusters
   public_subnet_tags = {
-    my-public-subnet-tag = "my-public-subnet-tag-value"
+    "kubernetes.io/cluster/<cluster_name>" = "shared"
+    "kubernetes.io/role/elb"               = "1"
   }
 }
