@@ -69,7 +69,7 @@ variable "private_subnet_tags" {
 }
 
 variable "enable_create_defaults" {
-  description = "Disable managing the default resources."
+  description = "Replaces AWS default network ACL, security group and routing table with module resources"
   type        = bool
-  default     = true
+  default     = false
 }
