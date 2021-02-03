@@ -189,8 +189,9 @@ resource "aws_route_table_association" "private_routing_table" {
 }
 
 data "aws_vpc_endpoint_service" "s3" {
-  count   = var.create_s3_vpc_endpoint ? 1 : 0
-  service = "s3"
+  count        = var.create_s3_vpc_endpoint ? 1 : 0
+  service      = "s3"
+  service_type = "Gateway"
 }
 
 resource "aws_vpc_endpoint" "s3_vpc_endpoint" {
