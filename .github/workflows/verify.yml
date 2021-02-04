@@ -26,7 +26,7 @@ jobs:
     strategy:
       matrix:
         terraform: [0.12.6, 0.13.6, latest]
-        example: ["public", "public-private"]
+        example: ["vpc-public", "vpc-public-private"]
     defaults:
       run:
         working-directory: examples/${{ matrix.example }}
