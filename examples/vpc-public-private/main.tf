@@ -8,9 +8,7 @@ module "vpc" {
   project = "Forest"
 
   // example to override default availability_zones
-  # availability_zones = {
-  #   eu-west-1 = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
-  # }
+  availability_zones = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
 
   // add aditional tags
   tags = {
