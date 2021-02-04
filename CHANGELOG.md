@@ -6,7 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.2.0] = 04-02-2021
+
+- fix CI
+- fix S3 endpoint service
+
+## [2.1.0] - 04-04-2020
+
 - Changed variable `enable_create_defaults` default from `true` to `false`. 
+
 
 ## [2.0.0] - 03-09-2019
 - Upgrade to terraform 0.12, Migration directions:
@@ -54,7 +62,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix region defaults
 - Initial release, based on https://040code.github.io/2017/09/19/talk-immutable-infrastructure/
 
-[Unreleased]: https://github.com/philips-software/terraform-aws-vpc/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/philips-software/terraform-aws-vpc/compare/2.2.0...HEAD
+[2.2.0]: https://github.com/philips-software/terraform-aws-vpc/compare/2.1.0...2.2.0
+[2.1.0]: https://github.com/philips-software/terraform-aws-vpc/compare/2.10.0...2.1.0
 [2.0.0]: https://github.com/philips-software/terraform-aws-vpc/compare/1.5.0...2.0.0
 [1.5.0]: https://github.com/philips-software/terraform-aws-vpc/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/philips-software/terraform-aws-vpc/compare/1.3.0...1.4.0
