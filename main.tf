@@ -23,10 +23,11 @@ locals {
 }
 
 resource "aws_vpc" "vpc" {
-  cidr_block           = cidrsubnet(var.cidr_block, 0, 0)
-  enable_dns_support   = true
-  enable_dns_hostnames = true
-  tags                 = local.tags
+  cidr_block                       = cidrsubnet(var.cidr_block, 0, 0)
+  enable_dns_support               = true
+  enable_dns_hostnames             = true
+  assign_generated_ipv6_cidr_block = true
+  tags                             = local.tags
 }
 
 resource "aws_default_network_acl" "default" {
@@ -101,6 +102,14 @@ resource "aws_route_table" "public_routetable" {
   tags = local.tags
 }
 
+resource "aws_route" "public_ipv6_route" {
+  depends_on = [aws_route_table.public_routetable]
+
+  route_table_id            = aws_route_table.public_routetable.id
+  destination_ipv6_cidr_block = "::/0"
+  gateway_id                = aws_internet_gateway.internet_gateway.id
+}
+
 resource "aws_route" "public_route" {
   depends_on = [aws_route_table.public_routetable]
 
@@ -112,6 +121,7 @@ resource "aws_route" "public_route" {
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = cidrsubnet(var.cidr_block, 8, count.index)
+  ipv6_cidr_block         = cidrsubnet(aws_vpc.vpc.ipv6_cidr_block, 8, count.index)
   availability_zone       = element(local.az, count.index)
   map_public_ip_on_launch = var.public_subnet_map_public_ip_on_launch
   count                   = length(local.az)
